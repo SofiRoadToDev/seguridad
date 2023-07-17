@@ -20,23 +20,26 @@ public class GlobalSecurityConfig  {
                         authz   /*Estos eran los antmatchers*/
                                 .requestMatchers("/api/v1/public/**").permitAll()
                                 .requestMatchers("/api/v1/admin/**").hasRole("admin")
-
+                                .requestMatchers("/api/v1/user/**").hasRole("user")
                          ).httpBasic(Customizer.withDefaults());
-
-
         return http.build();
     }
 
 
     @Bean
     public InMemoryUserDetailsManager userDetailsService(){
-        UserDetails user= User
+        UserDetails admin= User
                 .withUsername("sofia")
                 .password("{noop}sofi")
                 .roles("admin")
                 .build();
+        UserDetails user= User
+                .withUsername("vale")
+                .password("{noop}vale")
+                .roles("user")
+                .build();
 
-        return new InMemoryUserDetailsManager(user);
+        return new InMemoryUserDetailsManager(admin,user);
     }
 
 }
